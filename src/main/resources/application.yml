@@ -1,0 +1,23 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /api
+spring:
+  jackson:
+    default-property-inclusion: non_null
+management:
+  endpoint:
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    health:
+      show-details: always

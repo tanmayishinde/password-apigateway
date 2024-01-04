@@ -1,0 +1,27 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  application:
+    name: apigateway
+  cloud:
+    config:
+      enabled: true
+    gateway:
+      routes:
+        - id: passwordmanager-authservice
+          uri: lb://passwordmanager-authservice
+          predicates:
+            - Path=/api/passwordmanager-authservice/**
+          filters:
+            - StripPrefix=1
+            - RewritePath=/passwordmanager-authservice(?<segment>/?.*), $\{segment}
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        preferIpAddress: true
+        instanceId: ${spring.application.name}:${server.address}:${server.port}
+        port: ${server.port}
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 1s
